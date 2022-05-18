@@ -1,9 +1,19 @@
-variable "mongodbatlas_public_key" {
-  description = "public key for mongo db atlas interaction"
+variable "mongodbatlas_temp_public_key" {
+  description = "temp public key for mongo db atlas interaction, used when manually setting the keys"
   type        = string
 }
 
-variable "mongodbatlas_private_key" {
-  description = "private key for mongo db atlas interaction"
+variable "mongodbatlas_temp_private_key" {
+  description = "temp private key for mongo db atlas interaction, used when manually setting the keys"
+  type        = string
+}
+
+variable "mongodbatlas_org_public_key" {
+  description = "org public key for mongo db atlas interaction, used when using dynamic secrects in terraform"
+  type        = string
+}
+
+variable "mongodbatlas_org_private_key" {
+  description = "org_private key for mongo db atlas interaction, used when using dynamic secrects in terraform"
   type        = string
 }

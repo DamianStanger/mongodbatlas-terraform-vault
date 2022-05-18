@@ -4,7 +4,7 @@ Sign up for a free account https://www.mongodb.com/atlas/database
 
 Create a new project and note its project ID.
 
-Create an organisation API key with role "Organization Owner", ideally with a restricted CIDR notated IP range.
+Create an organisation API key with role "Organization Owner", ideally with a restricted CIDR notated IP range (https://cidr.xyz).
 
 
 # Vault setup
@@ -30,14 +30,14 @@ vault read mongodbatlas/creds/test
 
 Error creating programmatic api key .... IP address xxx.xxx.xxx.xxx is not allowed to access this resource.
 
-Ensure your public ip address is in the mongo atlas policy for the master api key cidr range.
+Ensure your public ip address is in the mongo atlas policy for the master api key cidr range (https://cidr.xyz).
 
 ```bash
 curl ifconfig.me
 dig @resolver1.opendns.com myip.opendns.com
 ```
 
-## test your temp keys using the admin api
+## test your temp keys using the admin api - https://www.mongodb.com/docs/atlas/reference/api/apiKeys
 ```bash
 curl -X GET -u "temp-public-key:temp-private-key" --digest -i "https://cloud.mongodb.com/api/atlas/v1.0"
 ```
@@ -48,8 +48,13 @@ curl -X GET -u "temp-public-key:temp-private-key" --digest -i "https://cloud.mon
 Install terraform as per https://learn.hashicorp.com/tutorials/terraform/install-cli
 
 ```
-export TF_VAR_mongodbatlas_public_key=temp-public-key
-export TF_VAR_mongodbatlas_private_key=temp-private-key
+# used when manually setting the keys
+export TF_VAR_mongodbatlas_temp_public_key=temp-public-key
+export TF_VAR_mongodbatlas_temp_private_key=temp-private-key
+
+# used when using dynamic secrects in terraform
+export TF_VAR_mongodbatlas_org_public_key=org-api-public-key
+export TF_VAR_mongodbatlas_org_private_key=org-api-private-key
 
 terraform init
 terraform validate
@@ -65,3 +70,4 @@ terraform plan
 - MongoDBAtlas terraform provider docs https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs
 - MongoDBAtlas vault secrets engine https://www.vaultproject.io/docs/secrets/mongodbatlas
 - Manage MongoDB Atlas Database Secrets in HashiCorp Vault https://www.mongodb.com/blog/post/manage-atlas-database-secrets-hashicorp-vault
+- 
