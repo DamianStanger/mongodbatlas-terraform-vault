@@ -37,11 +37,13 @@ curl ifconfig.me
 dig @resolver1.opendns.com myip.opendns.com
 ```
 
-## test your temp keys using the admin api - https://www.mongodb.com/docs/atlas/reference/api/apiKeys
+## test your temp keys using the admin api
+
 ```bash
 curl -X GET -u "temp-public-key:temp-private-key" --digest -i "https://cloud.mongodb.com/api/atlas/v1.0"
 ```
 
+Docs here: https://www.mongodb.com/docs/atlas/reference/api/apiKeys
 
 # Terraform
 
