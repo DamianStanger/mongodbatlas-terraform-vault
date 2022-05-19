@@ -1,0 +1,21 @@
+provider "mongodbatlas" {
+  public_key = vault_database_secret_backend_connection.db2.mongodbatlas[0].public_key
+  private_key  = vault_database_secret_backend_connection.db2.mongodbatlas[0].private_key
+}
+
+resource "vault_mount" "db1" {
+  path = "mongodbatlas01"
+  type = "database"
+}
+
+resource "vault_database_secret_backend_connection" "db2" {
+  backend       = vault_mount.db1.path
+  name          = "mongodbatlas02"
+  allowed_roles = ["dev", "prod"]
+
+  mongodbatlas {
+    public_key = var.mongodbatlas_org_public_key
+    private_key = var.mongodbatlas_org_private_key
+    project_id = "100000000000000000000001"
+  }
+}

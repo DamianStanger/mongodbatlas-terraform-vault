@@ -50,6 +50,9 @@ Docs here: https://www.mongodb.com/docs/atlas/reference/api/apiKeys
 Install terraform as per https://learn.hashicorp.com/tutorials/terraform/install-cli
 
 ```
+# set the project id
+export TF_VAR_mongodbatlas_project_id=100000000000000000000001
+
 # used when manually setting the keys
 export TF_VAR_mongodbatlas_temp_public_key=temp-public-key
 export TF_VAR_mongodbatlas_temp_private_key=temp-private-key

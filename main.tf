@@ -1,5 +1,5 @@
 resource "mongodbatlas_cluster" "cluster-terraform01" {
-  project_id              = "100000000000000000000001"
+  project_id              = var.mongodbatlas_project_id
   name                    = "cluster-terraform01"
 
   provider_name = "TENANT"
