@@ -1,21 +1,27 @@
 provider "mongodbatlas" {
-  public_key = vault_database_secret_backend_connection.db2.mongodbatlas[0].public_key
-  private_key  = vault_database_secret_backend_connection.db2.mongodbatlas[0].private_key
+  public_key  = vault_database_secret_backend_connection.db2.mongodbatlas[0].public_key
+  private_key = vault_database_secret_backend_connection.db2.mongodbatlas[0].private_key
 }
 
-resource "vault_mount" "db1" {
-  path = "mongodbatlas01"
+provider "vault" {
+  address = "http://127.0.0.1:8200"
+}
+
+
+
+resource "vault_mount" "db" {
+  path = "mongodbatlas"
   type = "database"
 }
 
 resource "vault_database_secret_backend_connection" "db2" {
-  backend       = vault_mount.db1.path
-  name          = "mongodbatlas02"
-  allowed_roles = ["dev", "prod"]
+  backend       = vault_mount.db.path
+  name          = "mongodbatlas"
+  allowed_roles = ["test"]
 
   mongodbatlas {
-    public_key = var.mongodbatlas_org_public_key
+    public_key  = var.mongodbatlas_org_public_key
     private_key = var.mongodbatlas_org_private_key
-    project_id = "100000000000000000000001"
+    project_id  = var.mongodbatlas_project_id
   }
 }
