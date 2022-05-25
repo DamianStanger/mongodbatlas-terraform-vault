@@ -1,5 +1,5 @@
 provider "mongodbatlas" {
-  public_key = vault_database_secrets_mount.db.mongodbatlas[0].public_key
+  public_key   = vault_database_secrets_mount.db.mongodbatlas[0].public_key
   private_key  = vault_database_secrets_mount.db.mongodbatlas[0].private_key
 }
 
@@ -11,10 +11,10 @@ resource "vault_database_secrets_mount" "db" {
   path = "db"
 
   mongodbatlas {
-    name = "foo"
-    public_key = var.mongodbatlas_org_public_key
+    name        = "foo"
+    public_key  = var.mongodbatlas_org_public_key
     private_key = var.mongodbatlas_org_private_key
-    project_id = "100000000000000000000001"
+    project_id  = var.mongodbatlas_project_id
   }
 }
 
