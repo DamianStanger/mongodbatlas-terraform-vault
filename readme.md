@@ -49,7 +49,7 @@ Docs here: https://www.mongodb.com/docs/atlas/reference/api/apiKeys
 
 Install terraform as per https://learn.hashicorp.com/tutorials/terraform/install-cli
 
-```
+``` bash
 # set the project id
 export TF_VAR_mongodbatlas_project_id=100000000000000000000001
 
@@ -67,6 +67,27 @@ terraform plan
 # terraform apply
 # terraform destroy
 ```
+
+# The different provider files
+There are 3 different provider files, to switch between them add and remove the trailing underscore.
+
+## provider1.tf
+This is how you would use atlas + terraform with no vault integration, you manaually put your atlas API keys in to the environment
+
+``` bash
+export TF_VAR_mongodbatlas_temp_public_key=temp-public-key
+export TF_VAR_mongodbatlas_temp_private_key=temp-private-key
+```
+
+## provider2.tf and provider3.tf
+These two are different methods of trying to get secrets from vault to use to connect to atlas. 
+They both would use org level API keys to attempt to generate dynamic keys to use in the actual building of infrastructure by terraform.
+
+``` bash
+export TF_VAR_mongodbatlas_org_public_key=org-api-public-key
+export TF_VAR_mongodbatlas_org_private_key=org-api-private-key
+```
+
 
 # Links
 

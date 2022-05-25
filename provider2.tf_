@@ -1,11 +1,13 @@
 provider "mongodbatlas" {
-  public_key   = vault_database_secrets_mount.db.mongodbatlas[0].public_key
-  private_key  = vault_database_secrets_mount.db.mongodbatlas[0].private_key
+  public_key  = vault_database_secrets_mount.db.mongodbatlas[0].public_key
+  private_key = vault_database_secrets_mount.db.mongodbatlas[0].private_key
 }
 
 provider "vault" {
   address = "http://127.0.0.1:8200"
 }
+
+
 
 resource "vault_database_secrets_mount" "db" {
   path = "db"
