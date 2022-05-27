@@ -57,24 +57,26 @@ export TF_VAR_mongodbatlas_project_id=100000000000000000000001
 export TF_VAR_mongodbatlas_temp_public_key=temp-public-key
 export TF_VAR_mongodbatlas_temp_private_key=temp-private-key
 
-# used when using dynamic secrects in terraform
+# used when using dynamic secrets in terraform
 export TF_VAR_mongodbatlas_org_public_key=org-api-public-key
 export TF_VAR_mongodbatlas_org_private_key=org-api-private-key
 
 terraform init
 terraform validate
 terraform plan
-# terraform apply
-# terraform destroy
+terraform apply
+terraform destroy
 ```
 
 # The different provider files
-There are 3 different provider files, to switch between them add and remove the trailing underscore.
+There are 4 different provider files, to switch between them add and remove the trailing underscore. Why are there 4? well i was trying all sorts to get the dynamic ephemeral credentials via vault working, and it took a while but in the end its working. TLDR; use provider4.tf
 
 ## provider1.tf
-This is how you would use atlas + terraform with no vault integration, you manaually put your atlas API keys in to the environment
+This is how you would use atlas + terraform with no vault integration, you manually put your atlas API keys in to the environment
 
 ``` bash
+export TF_VAR_mongodbatlas_project_id=100000000000000000000001
+# un-comment the relevant variables in variables.tf
 export TF_VAR_mongodbatlas_temp_public_key=temp-public-key
 export TF_VAR_mongodbatlas_temp_private_key=temp-private-key
 ```
@@ -84,9 +86,22 @@ These two are different methods of trying to get secrets from vault to use to co
 They both would use org level API keys to attempt to generate dynamic keys to use in the actual building of infrastructure by terraform.
 
 ``` bash
+export TF_VAR_mongodbatlas_project_id=100000000000000000000001
+# un-comment the relevant variables in variables.tf
 export TF_VAR_mongodbatlas_org_public_key=org-api-public-key
 export TF_VAR_mongodbatlas_org_private_key=org-api-private-key
 ```
+
+Actually these are trying to provision vault rather than use vault. My naive understanding of vault and how it integrates with atlas and terraform was to blame, that and the dearth of examples of doing this with mongo atlas.
+
+## provider4.tf
+This is the working provider :-) yay
+
+``` bash
+export TF_VAR_mongodbatlas_project_id=100000000000000000000001
+```
+
+Once you have set the project id and run `terraform apply` you should see some new keys being created in your atlas console with access to your project. And crucially your should see a new cluster getting created :-)
 
 
 # Links
@@ -94,6 +109,6 @@ export TF_VAR_mongodbatlas_org_private_key=org-api-private-key
 - Building mongo atlas infrastructure with terraform https://www.mongodb.com/atlas/hashicorp-terraform
 - Manage mongo DB secrets with vault https://www.mongodb.com/atlas/hashicorp-vault
 - MongoDBAtlas terraform provider docs https://registry.terraform.io/providers/mongodb/mongodbatlas/latest/docs
+- Vault terraform provider docs https://registry.terraform.io/providers/hashicorp/vault/latest/docs
 - MongoDBAtlas vault secrets engine https://www.vaultproject.io/docs/secrets/mongodbatlas
 - Manage MongoDB Atlas Database Secrets in HashiCorp Vault https://www.mongodb.com/blog/post/manage-atlas-database-secrets-hashicorp-vault
-- 
